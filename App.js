@@ -8,9 +8,11 @@ import {
 } from "react-native";
 
 import Repo from "./src/components/Repo";
+import NewRepoModal from "./src/components/NewRepoModal";
 
 export default class App extends Component {
   state = {
+    modalVisible: false,
     repos: [
       {
         id: 1,
@@ -50,6 +52,8 @@ export default class App extends Component {
             <Repo key={repo.id} data={repo} />
           ))}
         </ScrollView>
+
+        <NewRepoModal visible={this.state.modalVisible} />
       </View>
     );
   }

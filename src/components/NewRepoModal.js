@@ -10,12 +10,17 @@ import {
 } from "react-native";
 
 export default class NewRepoModal extends Component {
+  state = {
+    newRepoText: ""
+  };
+
   render() {
     return (
       <Modal
         animationType="fade"
         transparent={true}
         visible={this.props.visible}
+        onRequestClose={() => {}}
       >
         <View style={styles.modalContainer}>
           <View style={styles.boxContainer}>
@@ -26,18 +31,20 @@ export default class NewRepoModal extends Component {
               style={styles.boxInput}
               underlineColorAndroid="rgba(0,0,0,0)"
               placeholder="organização/repositório"
+              value={this.state.newRepoText}
+              onChangeText={newText => this.setState({ newRepoText: newText })}
             />
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
-                onPress={() => {}}
+                onPress={this.props.onCancel}
               >
                 <Text style={styles.buttonText}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.submitButton]}
-                onPress={() => {}}
+                onPress={() => this.props.onAdd(this.state.newRepoText)}
               >
                 <Text style={styles.buttonText}>Adicionar</Text>
               </TouchableOpacity>

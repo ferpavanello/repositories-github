@@ -4,6 +4,7 @@ import {
   View,
   Text,
   ScrollView,
+  AsyncStorage,
   TouchableOpacity
 } from "react-native";
 
@@ -13,29 +14,36 @@ import NewRepoModal from "./src/components/NewRepoModal";
 export default class App extends Component {
   state = {
     modalVisible: false,
-    repos: [
-      {
-        id: 1,
-        thumbnail:
-          "https://avatars0.githubusercontent.com/u/19414947?s=400&u=67c25fee9392fd19f064902a6b9762b330720205&v=4",
-        title: "teste",
-        author: "salve"
-      },
-      {
-        id: 2,
-        thumbnail:
-          "https://avatars0.githubusercontent.com/u/19414947?s=400&u=67c25fee9392fd19f064902a6b9762b330720205&v=4",
-        title: "again",
-        author: "salvo"
-      },
-      {
-        id: 3,
-        thumbnail:
-          "https://avatars0.githubusercontent.com/u/19414947?s=400&u=67c25fee9392fd19f064902a6b9762b330720205&v=4",
-        title: "ahhh",
-        author: "ops"
-      }
-    ]
+    repos: []
+  };
+
+  async componentDidMount() {
+    const repos =
+      JSON.parse(await AsyncStorage.getItem("@Repositories:reposGitHub")) || [];
+
+    this.setState({ repos });
+  }
+
+  _addRepository = async newRepoText => {
+    const repoCall = await fetch(`http://api.github.com/repos/${newRepoText}`);
+    const response = await repoCall.json();
+
+    const repository = {
+      id: response.id,
+      thumbnail: response.owner.avatar_url,
+      title: response.name,
+      author: response.owner.login
+    };
+
+    this.setState({
+      modalVisible: false,
+      repos: [...this.state.repos, repository]
+    });
+
+    await AsyncStorage.setItem(
+      "@Repositories:reposGitHub",
+      JSON.stringify(this.state.repos)
+    );
   };
 
   render() {
@@ -43,7 +51,9 @@ export default class App extends Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Dale React Native!!</Text>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => this.setState({ modalVisible: true })}
+          >
             <Text style={styles.headerButton}>+</Text>
           </TouchableOpacity>
         </View>
@@ -53,7 +63,11 @@ export default class App extends Component {
           ))}
         </ScrollView>
 
-        <NewRepoModal visible={this.state.modalVisible} />
+        <NewRepoModal
+          onCancel={() => this.setState({ modalVisible: false })}
+          onAdd={this._addRepository}
+          visible={this.state.modalVisible}
+        />
       </View>
     );
   }

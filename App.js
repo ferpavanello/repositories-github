@@ -50,7 +50,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>Dale React Native!!</Text>
+          <Text style={styles.headerText}>Repositories</Text>
           <TouchableOpacity
             onPress={() => this.setState({ modalVisible: true })}
           >

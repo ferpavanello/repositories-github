@@ -24,13 +24,13 @@ export default class NewRepoModal extends Component {
       >
         <View style={styles.modalContainer}>
           <View style={styles.boxContainer}>
-            <Text style={styles.boxTitle}>Adicionar Repositório</Text>
+            <Text style={styles.boxTitle}>Add Repositorie</Text>
             <TextInput
               autoFocus
               autoCapitalize="none"
               style={styles.boxInput}
               underlineColorAndroid="rgba(0,0,0,0)"
-              placeholder="organização/repositório"
+              placeholder="organization/repositorie"
               value={this.state.newRepoText}
               onChangeText={newText => this.setState({ newRepoText: newText })}
             />
@@ -40,13 +40,13 @@ export default class NewRepoModal extends Component {
                 style={[styles.button, styles.cancelButton]}
                 onPress={this.props.onCancel}
               >
-                <Text style={styles.buttonText}>Cancelar</Text>
+                <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.submitButton]}
                 onPress={() => this.props.onAdd(this.state.newRepoText)}
               >
-                <Text style={styles.buttonText}>Adicionar</Text>
+                <Text style={styles.buttonText}>Add</Text>
               </TouchableOpacity>
             </View>
           </View>
